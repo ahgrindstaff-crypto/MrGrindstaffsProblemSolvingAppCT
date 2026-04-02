@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Grindstaff's Problem-Solving App</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --success: #22c55e;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        #app-container {
+            width: 350px;
+            height: 600px;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 8px solid #1e293b;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .step-indicator {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1rem;
+            border-radius: 0.5rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.1s;
+        }
+
+        button:active { transform: scale(0.98); }
+        button.alt { background: var(--secondary); }
+
+        .hidden { display: none !important; }
+        
+        .pillar-card {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <div class="header">Problem Solver v1.0</div>
+    
+    <div class="content" id="screen-start">
+        <h2>Identify the "Big Mess"</h2>
+        <p>What problem are we solving today?</p>
+        <button onclick="startApp('Cleaning a messy room')">Messy Room</button>
+        <button onclick="startApp('A 5-page History Essay')">History Essay</button>
+        <button onclick="startApp('Building a Robot Level')">Game Design</button>
+    </div>
+
+    <div class="content hidden" id="screen-process">
+        <div class="step-indicator" id="step-name">Decomposition</div>
+        <h3 id="pillar-title">Break it down!</h3>
+        <div id="pillar-desc" class="pillar-card"></div>
+        <div id="options-container"></div>
+    </div>
+
+    <div class="content hidden" id="screen-result">
+        <h2 style="color: var(--success)">Problem Solved!</h2>
+        <p id="final-summary"></p>
+        <button class="alt" onclick="location.reload()">Start Over</button>
+    </div>
+</div>
+
+<script>
+    // VARIABLES: Storing our app's data
+    let currentProblem = "";
+    let step = 0;
+
+    const pillars = [
+        {
+            name: "Decomposition",
+            instruction: "What is the very first tiny task?",
+            options: ["Make a list", "Pick up one item", "Open the document"]
+        },
+        {
+            name: "Pattern Recognition",
+            instruction: "Have you solved something like this before?",
+            options: ["Yes, last week", "No, this is new", "Sort of"]
+        },
+        {
+            name: "Abstraction",
+            instruction: "Remove the 'Noise'. What is NOT important right now?",
+            options: ["What others think", "How long it takes", "Perfect results"]
+        },
+        {
+            name: "Algorithmic Thinking",
+            instruction: "Final step: Set your 'If/Then' rule.",
+            options: ["If I get stuck, then ask for help", "If I finish 1 part, then take a break"]
+        }
+    ];
+
+    // FUNCTION: Starts the process
+    function startApp(problem) {
+        currentProblem = problem;
+        document.getElementById('screen-start').classList.add('hidden');
+        document.getElementById('screen-process').classList.remove('hidden');
+        renderStep();
+    }
+
+    // FUNCTION: Renders each pillar
+    function renderStep() {
+        const data = pillars[step];
+        document.getElementById('step-name').innerText = `Step ${step + 1}: ${data.name}`;
+        document.getElementById('pillar-desc').innerText = data.instruction;
+        
+        const container = document.getElementById('options-container');
+        container.innerHTML = ''; // Clear old buttons
+        
+        data.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.onclick = nextStep;
+            container.appendChild(btn);
+        });
+    }
+
+    // CONDITIONALS: Logic to check if we are done
+    function nextStep() {
+        if (step < pillars.length - 1) {
+            step++;
+            renderStep();
+        } else {
+            showFinal();
+        }
+    }
+
+    function showFinal() {
+        document.getElementById('screen-process').classList.add('hidden');
+        document.getElementById('screen-result').classList.remove('hidden');
+        document.getElementById('final-summary').innerText = 
+            `You applied Computational Thinking to: "${currentProblem}". By using these 4 pillars, you turned a "Big Mess" into a step-by-step plan.`;
+    }
+</script>
+
+</body>
+</html>
