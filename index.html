@@ -3,114 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mr. Grindstaff's Universal Problem-Solver</title>
+    <title>Mr. Grindstaff's CT Solver</title>
     <style>
         :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --primary: #38bdf8;
-            --accent: #f472b6;
-            --text: #f1f5f9;
-            --sub: #94a3b8;
-            --success: #4ade80;
+            --bg: #0f172a; --card: #1e293b; --primary: #38bdf8;
+            --accent: #f472b6; --text: #f1f5f9; --sub: #94a3b8; --success: #4ade80;
         }
-
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 10px;
-        }
-
-        #app-frame {
-            width: 380px;
-            height: 680px;
-            background: var(--card);
-            border-radius: 2rem;
-            border: 8px solid #334155;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-        }
-
-        .header {
-            background: var(--primary);
-            color: var(--bg);
-            padding: 15px;
-            text-align: center;
-            font-weight: 900;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-        }
-
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 10px; }
+        #app-frame { width: 380px; height: 700px; background: var(--card); border-radius: 2rem; border: 8px solid #334155; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+        .header { background: var(--primary); color: var(--bg); padding: 15px; text-align: center; font-weight: 900; }
         .progress-container { height: 6px; background: #334155; }
         #progress-fill { height: 100%; background: var(--accent); width: 0%; transition: 0.4s; }
-
-        .screen {
-            padding: 25px;
-            flex-grow: 1;
-            display: none;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-
+        .screen { padding: 25px; flex-grow: 1; display: none; flex-direction: column; overflow-y: auto; }
         .screen.active { display: flex; }
-
-        /* Pillar Badges */
-        .pillar-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
-            background: var(--bg);
-            color: var(--primary);
-            font-size: 0.7rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            border: 1px solid var(--primary);
-            margin-bottom: 15px;
-        }
-
-        h2 { font-size: 1.4rem; margin-bottom: 10px; }
-        p { color: var(--sub); line-height: 1.5; font-size: 0.95rem; }
-
-        /* Button Styling */
+        .pillar-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; background: var(--bg); color: var(--primary); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border: 1px solid var(--primary); margin-bottom: 15px; }
         .btn-list { display: flex; flex-direction: column; gap: 10px; margin-top: auto; padding-top: 20px; }
-        
-        button {
-            background: rgba(255,255,255,0.05);
-            color: var(--text);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: left;
-            transition: 0.2s;
-            font-size: 0.9rem;
-        }
-
-        button:hover {
-            background: rgba(56, 189, 248, 0.15);
-            border-color: var(--primary);
-            transform: scale(1.02);
-        }
-
-        .category-tag {
-            font-size: 0.7rem;
-            color: var(--accent);
-            display: block;
-            margin-bottom: 4px;
-            font-weight: bold;
-        }
-
-        /* Results Screen */
-        .result-icon { font-size: 4rem; text-align: center; margin: 20px 0; color: var(--success); }
+        button { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid rgba(255,255,255,0.1); padding: 14px; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.2s; font-size: 0.9rem; }
+        button:hover { background: rgba(56, 189, 248, 0.15); border-color: var(--primary); }
+        .category-tag { font-size: 0.7rem; color: var(--accent); display: block; margin-bottom: 4px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -120,82 +30,79 @@
     <div class="progress-container"><div id="progress-fill"></div></div>
 
     <div id="screen-home" class="screen active">
-        <h2>Choose a "Mess"</h2>
-        <p>Pick a real-world problem. We will use the 4 pillars of Computational Thinking to fix it.</p>
-        <div class="btn-list" id="scenario-list">
-            </div>
+        <h2>Select a Scenario</h2>
+        <p>How can Computational Thinking help you solve these real-life "bugs"?</p>
+        <div class="btn-list" id="scenario-list"></div>
     </div>
 
     <div id="screen-pillar" class="screen">
         <div id="pillar-content">
-            <span class="pillar-badge" id="pillar-label">DECOMPOSITION</span>
-            <h2 id="step-title">Step Title</h2>
-            <p id="step-desc">Step Description</p>
+            <span class="pillar-badge" id="pillar-label"></span>
+            <h2 id="step-title"></h2>
+            <p id="step-desc"></p>
         </div>
-        <div class="btn-list" id="option-list">
-            </div>
+        <div class="btn-list" id="option-list"></div>
     </div>
 
-    <div id="screen-finish" class="screen">
-        <div class="result-icon">⚡</div>
-        <h2>System Optimized!</h2>
+    <div id="screen-finish" class="screen" style="text-align:center;">
+        <h2 style="color:var(--success)">Logic Applied!</h2>
         <p id="finish-text"></p>
-        <div class="btn-list">
-            <button onclick="location.reload()" style="text-align:center; background: var(--primary); color: var(--bg); font-weight: bold;">New Scenario</button>
-        </div>
+        <button onclick="location.reload()" style="background:var(--primary); color:var(--bg); font-weight:bold; text-align:center;">Pick New Problem</button>
     </div>
 </div>
 
 <script>
-    // THE MASTER DATABASE (The "Code as Content" lesson)
     const library = {
-        groupchat: {
-            name: "Group Chat Drama",
-            cat: "SOCIAL",
+        homework: {
+            name: "Homework Frustration", cat: "ACADEMIC",
             steps: [
-                { p: "Decomposition", t: "Break Down the Drama", d: "You can't solve 'everyone is mad.' What is the first data point to check?", o: ["Check the exact message sent", "See who left the chat", "Check the timestamp"] },
-                { p: "Pattern Recognition", t: "Find the Trend", d: "Does this happen every time you post without an emoji?", o: ["Yes, sarcasm is a high-risk bug", "No, it's a random error"] },
-                { p: "Abstraction", t: "Filter the Noise", d: "What info can we delete so we can focus on the fix?", o: ["The group chat name", "The color of your wallpaper", "Your pride"] },
-                { p: "Algorithmic Thinking", t: "The Fix Script", d: "Final step: Set the If/Then logic.", o: ["IF [Feelings Hurt] THEN [DM Apology]", "IF [Confusion] THEN [Clarify Intent]"] }
+                { p: "Decomposition", t: "The Giant Pile", d: "You have 3 subjects and 20 problems. What is the first unit of work?", o: ["Do one math problem", "Read the first sentence", "Organize the desk"] },
+                { p: "Pattern Recognition", t: "Mental Block", d: "When do you usually get frustrated?", o: ["After 20 minutes of work", "As soon as I see the instructions"] },
+                { p: "Abstraction", t: "Filter the Stress", d: "What 'Noise' can you ignore to get started?", o: ["The total number of pages left", "What my friends are doing online"] },
+                { p: "Algorithmic Thinking", t: "The Study Loop", d: "Create your success rule.", o: ["IF [Finish 5 items] THEN [3 min stretch]", "REPEAT [Read] UNTIL [Understood]"] }
             ]
         },
-        locker: {
-            name: "Locker Disaster",
-            cat: "LIFE SKILLS",
+        lunch: {
+            name: "Forgot Your Lunch", cat: "LIFE SKILLS",
             steps: [
-                { p: "Decomposition", t: "Sub-Tasks", d: "How do you start cleaning a mountain of paper?", o: ["Take everything out first", "Find one specific book", "Throw away 5 old wrappers"] },
-                { p: "Pattern Recognition", t: "The Source", d: "Where is the mess coming from?", o: ["Loose papers from Math", "Old gym clothes", "Lunch trash"] },
-                { p: "Abstraction", t: "Keep What Matters", d: "What stays in the locker?", o: ["Graded work (Keep)", "Old gum (Delete)", "Current Textbooks (Keep)"] },
-                { p: "Algorithmic Thinking", t: "The System", d: "Create the rule to keep it clean.", o: ["IF [New Paper] THEN [Put in Folder]", "IF [Friday] THEN [Clear Trash]"] }
+                { p: "Decomposition", t: "Resource Check", d: "You're hungry and have $0. Who are the stakeholders?", o: ["The cafeteria staff", "A trusted teacher", "My parents"] },
+                { p: "Pattern Recognition", t: "Past Solutions", d: "How do others solve this error?", o: ["Borrowing from the 'extra' bin", "Calling home early"] },
+                { p: "Abstraction", t: "The Main Goal", d: "Forget that it was your favorite meal. What's the goal?", o: ["Getting energy for the afternoon", "Complaining about the mistake"] },
+                { p: "Algorithmic Thinking", t: "The Backup Plan", d: "Set the logic for next time.", o: ["IF [Bag on counter] THEN [Check before door]", "IF [No Lunch] THEN [Report to Office]"] }
             ]
         },
-        roblox: {
-            name: "Pro Gamer Move",
-            cat: "GAMING",
+        storm: {
+            name: "Storm Anxiety", cat: "WELLNESS",
             steps: [
-                { p: "Decomposition", t: "Analyze the Level", d: "You keep losing. Break down the difficulty.", o: ["Movement speed", "Jump distance", "Enemy timing"] },
-                { p: "Pattern Recognition", t: "Enemy AI", d: "Do the enemies follow a set path?", o: ["Yes, they move in a loop", "No, they are randomized"] },
-                { p: "Abstraction", t: "Visual Data", d: "Don't look at the textures. Look at the Hitboxes.", o: ["Focus on collision areas", "Ignore the fancy lighting"] },
-                { p: "Algorithmic Thinking", t: "The Strategy", d: "Program your fingers to win.", o: ["REPEAT [Jump] UNTIL [Clear Gap]", "IF [Health < 20] THEN [Retreat]"] }
+                { p: "Decomposition", t: "Analyze the Sound", d: "Thunder is just air expanding. Break the storm down.", o: ["Count the seconds between flash and bang", "Check the weather radar"] },
+                { p: "Pattern Recognition", t: "Safety History", d: "How many times have you been safe in a storm before?", o: ["100% of the time", "Every time I am indoors"] },
+                { p: "Abstraction", t: "Sensory Overload", d: "What 'Input' is making you freak out?", o: ["The loud noise", "The bright flash", "The scary movie thoughts"] },
+                { p: "Algorithmic Thinking", t: "The Calm Script", d: "A logic gate for your brain.", o: ["IF [Thunder sounds] THEN [Put on headphones]", "IF [Scared] THEN [Box Breathing]"] }
             ]
         },
-        essay: {
-            name: "The 5-Page History Boss",
-            cat: "ACADEMIC",
+        help: {
+            name: "Asking for Help", cat: "COMMUNICATION",
             steps: [
-                { p: "Decomposition", t: "Small Paragraphs", d: "A 5-page essay is just 10 small parts.", o: ["Write the hook", "Find 3 quotes", "Draft the conclusion"] },
-                { p: "Pattern Recognition", t: "Essay Structure", d: "How is this like the essay you wrote in English?", o: ["Both use Intro/Body/Conclusion", "Both need a thesis statement"] },
-                { p: "Abstraction", t: "Main Idea", d: "Strip away the 'fluff'. What is your core argument?", o: ["The actual fact", "The fancy vocabulary"] },
-                { p: "Algorithmic Thinking", t: "The Writing Rule", d: "How do you stay focused?", o: ["IF [Finish Paragraph] THEN [5 min Break]", "REPEAT [Write] UNTIL [Word Count Met]"] }
+                { p: "Decomposition", t: "The Question", d: "You can't just say 'I don't get it.' What part is hard?", o: ["The first instruction", "The vocabulary words", "The software buttons"] },
+                { p: "Pattern Recognition", t: "Best Timing", d: "When is the teacher most available?", o: ["During work time", "While they are lecturing"] },
+                { p: "Abstraction", t: "The Message", d: "Remove the 'I'm embarrassed' feeling. What's the data?", o: ["I need help with Step 3", "I don't know where the save button is"] },
+                { p: "Algorithmic Thinking", t: "The Help Request", d: "Your step-by-step for the teacher.", o: ["1. Raise hand. 2. State specific step. 3. Listen."] }
+            ]
+        },
+        ai_ethics: {
+            name: "The AI Shortcut", cat: "ETHICS / TECH",
+            steps: [
+                { p: "Decomposition", t: "What is Learning?", d: "If an AI does the work, which part of your brain grew?", o: ["The 'typing' part", "Zero parts", "The 'copy/paste' part"] },
+                { p: "Pattern Recognition", t: "Future Output", d: "If you always use AI, what happens on the final test?", o: ["I won't know the patterns myself", "I'll be a pro at prompts"] },
+                { p: "Abstraction", t: "The Purpose", d: "What is the point of the assignment?", o: ["To get a grade (Noise)", "To train my brain (Important)"] },
+                { p: "Algorithmic Thinking", t: "The AI Rule", d: "Set your personal code of ethics.", o: ["IF [AI writes it] THEN [I didn't learn it]", "USE AI [For Brainstorming] NOT [For Doing]"] }
             ]
         }
     };
 
-    let activeScenario = null;
-    let currentStep = 0;
-
-    // INITIALIZE: Build the Home Menu
+    let activeScenario = null; let currentStep = 0;
     const scenarioList = document.getElementById('scenario-list');
+
     for (let key in library) {
         const btn = document.createElement('button');
         btn.innerHTML = `<span class="category-tag">${library[key].cat}</span> ${library[key].name}`;
@@ -204,8 +111,7 @@
     }
 
     function startScenario(id) {
-        activeScenario = library[id];
-        currentStep = 0;
+        activeScenario = library[id]; currentStep = 0;
         document.getElementById('screen-home').classList.remove('active');
         document.getElementById('screen-pillar').classList.add('active');
         renderStep();
@@ -216,7 +122,6 @@
         document.getElementById('pillar-label').innerText = data.p;
         document.getElementById('step-title').innerText = data.t;
         document.getElementById('step-desc').innerText = data.d;
-
         const optList = document.getElementById('option-list');
         optList.innerHTML = "";
         data.o.forEach(choice => {
@@ -225,27 +130,18 @@
             btn.onclick = next;
             optList.appendChild(btn);
         });
-
-        // Progress Fill
         document.getElementById('progress-fill').style.width = ((currentStep) / 4 * 100) + "%";
     }
 
     function next() {
-        if (currentStep < 3) {
-            currentStep++;
-            renderStep();
-        } else {
-            showFinish();
+        if (currentStep < 3) { currentStep++; renderStep(); } 
+        else {
+            document.getElementById('progress-fill').style.width = "100%";
+            document.getElementById('screen-pillar').classList.remove('active');
+            document.getElementById('screen-finish').classList.add('active');
+            document.getElementById('finish-text').innerText = `Problem Solved! By using Computational Thinking, you turned an emotional "bug" into a logical solution. Code your life the way you code your apps!`;
         }
     }
-
-    function showFinish() {
-        document.getElementById('progress-fill').style.width = "100%";
-        document.getElementById('screen-pillar').classList.remove('active');
-        document.getElementById('screen-finish').classList.add('active');
-        document.getElementById('finish-text').innerText = `You just used ${activeScenario.name} as a test case for Computational Thinking. Whether it's code, school, or social life, the 4 Pillars are the ultimate cheat code for solving problems.`;
-    }
 </script>
-
 </body>
 </html>
